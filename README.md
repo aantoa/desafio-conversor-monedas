@@ -35,11 +35,14 @@ El sistema permite convertir entre las siguientes monedas:
 ```plaintext
 desafio-conversor-moneda/
 │
-├── APIConversorMonedas.java        # Lógica de conexión a la API y conversión
-├── ConversorMonedas.java           # Clase principal con menú interactivo
-├── Main.java                       # Clase con el método main para iniciar el programa
-├── gson-2.10.1.jar                 # Dependencia para manipular JSON
-└── README.md                       # Descripción del proyecto
+├── src/
+│   ├── APIConversorMonedas.java     # Lógica de conexión a la API y conversión
+│   ├── ConversorMonedas.java        # Clase principal con menú interactivo
+│   └── Main.java                    # Punto de entrada del programa (método main)
+│
+├── gson-2.10.1.jar                  # Dependencia para manipular JSON
+└── README.md                        # Descripción del proyecto
+
 ```
 ## 📌 Instrucciones para ejecutar
 Clona el repositorio o descarga los archivos.
