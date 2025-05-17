@@ -8,20 +8,28 @@ public class Conversor {
         put(4, "CLP");
         put(5, "USD");
         put(6, "BRL");
+        put(7, "EUR");
+        put(8, "MXN");
+        put(9, "PEN");
+        put(10, "GBP");
+        put(11, "JPY");
+        put(12, "KRW");
     }};
 
     private final Set<String> codigosMonedas = new HashSet<>(opcionesMonedas.values());
     private final APIConversorMonedas apiConversor;
+    private final HistorialConversor historial;
 
-    public Conversor(APIConversorMonedas apiConversor) {
+    Scanner scanner = new Scanner(System.in);
+
+    public Conversor(APIConversorMonedas apiConversor, HistorialConversor historial) {
         this.apiConversor = apiConversor;
+        this.historial = historial;
     }
 
     public void iniciar() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("****************************************");
         System.out.println("Bienvenido/a al Conversor de Monedas 💱");
-        System.out.println("****************************************");
         mostrarMonedas();
 
         while (true) {
@@ -38,24 +46,39 @@ public class Conversor {
                 double resultado = apiConversor.convertir(origen, destino, monto);
                 System.out.printf("El valor de %.2f %s corresponde a %.2f %s%n",
                         monto, origen, resultado, destino);
+                historial.agregarRegistroConTimestamp(origen, destino, monto, resultado);
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
             }
 
-            System.out.print("\n¿Deseas hacer otra conversión? (s/n): ");
-            String resp = scanner.nextLine().trim().toLowerCase();
-            if (!resp.equals("s") && !resp.equals("si")) {
-                System.out.println("👋 Gracias por usar el conversor. ¡Hasta luego!");
-                break;
-            }
-            mostrarMonedas();
-        }
+            while (true) {
+                System.out.println("\n¿Qué deseas hacer ahora?");
+                System.out.println("1. Realizar otra conversión");
+                System.out.println("2. Ver historial de conversiones");
+                System.out.println("3. Salir");
+                System.out.print("👉 Ingresa una opción (1/2/3): ");
+                String opcion = scanner.nextLine().trim();
 
-        scanner.close();
+                if (opcion.equals("1")) {
+                    mostrarMonedas();
+                    break; // sale del menú y vuelve a convertir
+                } else if (opcion.equals("2")) {
+                    historial.mostrarHistorial();
+                    // vuelve a mostrar el menú después de ver historial
+                } else if (opcion.equals("3") || opcion.equalsIgnoreCase("salir") || opcion.equals("0")) {
+                    System.out.println("👋 Gracias por usar el conversor. ¡Hasta luego!");
+                    scanner.close();
+                    return;
+                } else {
+                    System.out.println("❌ Opción inválida. Intenta nuevamente.");
+                }
+            }
+        }
     }
 
     private void mostrarMonedas() {
-        System.out.print("Monedas disponibles: [");
+        System.out.println("****************************************");
+        System.out.print("\nMonedas disponibles: [");
         opcionesMonedas.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .forEach(entry -> System.out.print(entry.getKey() + ". " + entry.getValue() + ", "));

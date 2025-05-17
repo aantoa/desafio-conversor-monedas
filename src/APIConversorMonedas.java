@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class APIConversorMonedas {
     private final Map<String, Double> tasas = new HashMap<>();
-    private final Set<String> monedasValidas = Set.of("ARS", "BOB", "BRL", "CLP", "COP", "USD");
+    private final Set<String> monedasValidas = Set.of("ARS", "BOB", "BRL", "CLP", "COP", "USD", "EUR","MXN", "PEN", "GBP", "JPY", "KRW");
 
     public APIConversorMonedas() {
         cargarTasas();

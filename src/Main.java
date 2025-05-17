@@ -9,7 +9,8 @@ public class Main {
             System.exit(1);
         }
 
-        Conversor conversor = new Conversor(api);
+        HistorialConversor historial = new HistorialConversor();
+        Conversor conversor = new Conversor(api, historial);
         conversor.iniciar();
     }
 }
